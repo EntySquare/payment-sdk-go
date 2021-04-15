@@ -28,7 +28,3 @@ func (p *PayClient) GetAddr(ctx context.Context) (addr Address, err error) {
 func (p *PayClient) GetOrder(ctx context.Context) (o Order, err error) {
 	return Order{}, err
 }
-
-func (p *PayClient) GetHistory(ctx context.Context) (orders OrderList, err error) {
-	return OrderList{}, err
-}
