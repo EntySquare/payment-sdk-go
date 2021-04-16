@@ -89,3 +89,11 @@ type FindOrderResp struct {
 type CallContractResp struct {
 	Payload []byte
 }
+
+type api interface {
+	Transfer(req *TransferReq) (res *TransferResp)
+	FindOrder(req *FindOrderReq) (res *FindOrderResp)
+	Withdraw(req *WithdrawReq) (res *WithdrawResp)
+	Generate(req *GenAddrReq) (res *GenAddrResp)
+	CallContract(req *CallContractReq) (res *CallContractResp)
+}

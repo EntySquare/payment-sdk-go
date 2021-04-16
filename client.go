@@ -21,10 +21,15 @@ func (p *PayClient) Withdraw(ctx context.Context) (o Order, err error) {
 	return Order{}, err
 }
 
-func (p *PayClient) GetAddr(ctx context.Context) (addr Address, err error) {
-	return Address{}, err
+//生成钱包地址
+func (p *PayClient) GetAddr(ctx context.Context) (err error) {
+	return err
 }
 
 func (p *PayClient) GetOrder(ctx context.Context) (o Order, err error) {
 	return Order{}, err
+}
+
+type PayInterface interface {
+	GenAddr()
 }
