@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"entysquare/payment-sdk-go/api"
+	"entysquare/payment-sdk-go/config"
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -25,7 +25,7 @@ func TestClient(t *testing.T) {
 		t.Error(err)
 	}
 	fmt.Println(r)
-	//tr, err := t1.DoMD5(context.Background(), &api.Req{JsonStr: res})
+	//tr, err := t1.DoMD5(context.Background(), &config.Req{JsonStr: res})
 	//if err != nil {
 	//	log.Fatalf("could not greet: %v", err)
 	//}

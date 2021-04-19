@@ -1,0 +1,91 @@
+syntax = "proto3";
+option go_package = "../lib";
+package api;
+//protoc --go_out=plugins=grpc:./ ./pay_ment_api.proto
+service PayApi {
+  rpc Register (RegisterReq) returns (RegisterResp) {}
+  rpc GetBalance (GetBalanceReq) returns (GetBalanceResp) {}
+  rpc Transfer (TransferReq) returns (TransferResp) {}
+  rpc Withdraw (WithdrawReq) returns (WithdrawResp) {}
+  rpc GetAddr (GetAddrReq) returns (GetAddrResp) {}
+  rpc ContractDo (ContractDoReq) returns (ContractDoResp) {}
+  rpc GetOrder (GetOrderReq) returns (GetOrderResp) {}
+}
+
+message RegisterReq {
+  string Num = 1;
+}
+
+message RegisterResp {
+  string Secret = 1;
+}
+
+message GetBalanceReq {
+  string Secret = 1;
+  string Symbol = 2;
+}
+
+message GetBalanceResp {
+  string Balance = 1;
+}
+
+message TransferReq {
+  string Secret = 1;
+  string ToNum = 2;
+  string Symbol = 3;
+  string Amount = 4;
+  string Url = 5;
+}
+
+message TransferResp {
+  string OrderNum = 1;
+}
+
+message WithdrawReq {
+  string Secret = 1;
+  string ToAddress = 2;
+  string Symbol = 3;
+  string Amount = 4;
+  string Url = 5;
+}
+
+message WithdrawResp {
+  string OrderNum = 1;
+}
+
+message GetAddrReq {
+  string Address = 1;
+}
+
+message GetAddrResp {
+  string OrderNum = 1;
+  string OrderTyp = 2;
+  bytes OrderInfo = 3;
+}
+
+message ContractDoReq {
+  string Secret = 1;
+  string ContractAddress = 2;
+  bytes params = 3;
+  string remark = 4;
+  string Url = 5;
+}
+
+message ContractDoResp {
+  string OrderNum = 1;
+}
+
+message GetOrderReq {
+  string Secret = 1;
+  string OrderNum = 2;
+}
+
+message GetOrderResp {
+  string OrderNum = 1;
+  string OrderTyp = 2;
+  string State = 3;
+  string From = 4;
+  string To = 5;
+  string CreateTime = 6;
+}
+

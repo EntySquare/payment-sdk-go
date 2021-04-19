@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"entysquare/payment-sdk-go/api"
+	"entysquare/payment-sdk-go/config"
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -31,7 +31,7 @@ func (t *PayApiClient) Transfer(context.Context, *api.TransferReq) (*api.Transfe
 	return nil, nil
 }
 
-//func (t *PayApiClient)FindOrder(context.Context, *api.FindOrderReq) (*api.FindOrderResp, error)          {
+//func (t *PayApiClient)FindOrder(context.Context, *config.FindOrderReq) (*config.FindOrderResp, error)          {
 //	return nil,nil
 //}
 func (t *PayApiClient) Withdraw(context.Context, *api.WithdrawReq) (*api.WithdrawResp, error) {
@@ -51,7 +51,7 @@ func TestServer(t *testing.T) {
 		log.Fatalf("监听失败: %v", err)
 	}
 	s := grpc.NewServer(grpc.Creds(creds)) //创建gRPC服务
-	//api.RegisterWaiterServer(s, &payApiClien{cc})
+	//config.RegisterWaiterServer(s, &payApiClien{cc})
 	api.RegisterPayApiServer(s, &PayApiClient{})
 	reflection.Register(s)
 

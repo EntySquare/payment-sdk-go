@@ -2,7 +2,8 @@ package payment
 
 import (
 	"context"
-	"entysquare/payment-sdk-go/api"
+	"entysquare/payment-sdk-go/lib"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"log"
@@ -10,7 +11,7 @@ import (
 
 type PayClient struct {
 	conn   *grpc.ClientConn
-	client api.PayApiClient
+	client lib.PayApiClient
 }
 
 // build new client with ssl encryption
@@ -28,7 +29,7 @@ func NewSSLPaymentClient(certPath string, url string) (p *PayClient, err error) 
 		log.Fatalf("did not connect: %v", err)
 		return nil, err
 	}
-	client := api.NewPayApiClient(conn)
+	client := lib.NewPayApiClient(conn)
 	return &PayClient{
 		conn:   conn,
 		client: client,
@@ -52,12 +53,12 @@ func (p *PayClient) GetBalance(ctx context.Context, secret string, symbol string
 }
 
 // transfer from accounts
-func (p *PayClient) Transfer(ctx context.Context, secret string, toNum string, symbol string, amount string) (orderNum string, err error) {
+func (p *PayClient) Transfer(ctx context.Context, secret string, toNum string, symbol string, amount string, callbackUrl string) (orderNum string, err error) {
 	return "", err
 }
 
 // withdraw to address
-func (p *PayClient) Withdraw(ctx context.Context, secret string, toAddress string, symbol string, amount string) (orderNum string, err error) {
+func (p *PayClient) Withdraw(ctx context.Context, secret string, toAddress string, symbol string, amount string, callbackUrl string) (orderNum string, err error) {
 	return "", err
 }
 
@@ -67,7 +68,7 @@ func (p *PayClient) GetAddr(ctx context.Context, secret string, symbol string) (
 }
 
 // do contract operations that were supported by payment backend
-func (p *PayClient) ContractDo(ctx context.Context, secret string, contractAddress string, params []byte, remark string) (orderNum string, err error) {
+func (p *PayClient) ContractDo(ctx context.Context, secret string, contractAddress string, params []byte, remark string, callbackUrl string) (orderNum string, err error) {
 	return "", err
 }
 
