@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"entysquare/payment-sdk-go/config"
+	"entysquare/payment-sdk-go/lib"
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -17,17 +17,15 @@ func TestClient(t *testing.T) {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	t1 := api.NewPayApiClient(conn)
+	t1 := lib.NewPayApiClient(conn)
 	// 模拟请求数据
 	// 调用gRPC接口
-	r, err := t1.FindOrder(context.TODO(), &api.FindOrderReq{OrderNum: "213123"})
+	r, err := t1.Register(context.TODO(), &lib.RegisterReq{
+		Num: "15361445990",
+	})
 	if err != nil {
 		t.Error(err)
 	}
 	fmt.Println(r)
-	//tr, err := t1.DoMD5(context.Background(), &config.Req{JsonStr: res})
-	//if err != nil {
-	//	log.Fatalf("could not greet: %v", err)
-	//}
-	//log.Printf("服务端响应: %s", tr.BackJson)
+
 }
