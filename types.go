@@ -1,5 +1,9 @@
 package payment
 
+type Account struct {
+	Secret string
+}
+
 type Order struct {
 	OrderNum string
 	// a type of TX/CON
@@ -90,7 +94,7 @@ type CallContractResp struct {
 	Payload []byte
 }
 
-type api interface {
+type Api interface {
 	Transfer(req *TransferReq) (res *TransferResp)
 	FindOrder(req *FindOrderReq) (res *FindOrderResp)
 	Withdraw(req *WithdrawReq) (res *WithdrawResp)
