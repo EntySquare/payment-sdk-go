@@ -43,36 +43,101 @@ func (p *PayClient) Shut(ctx context.Context) (err error) {
 
 // register new customer with secret returned
 func (p *PayClient) Register(ctx context.Context, num string) (account Account, err error) {
-
-	return Account{}, err
+	resp, err := p.client.Register(ctx, &lib.RegisterReq{
+		Num: num,
+	}, nil)
+	if err != nil {
+		return Account{}, err
+	}
+	return Account{
+		Secret: resp.Secret,
+	}, nil
 }
 
 // Get balance for secret keeper
 func (p *PayClient) GetBalance(ctx context.Context, secret string, symbol string) (b string, err error) {
-	return "", err
+	resp, err := p.client.GetBalance(ctx, &lib.GetBalanceReq{
+		Secret: secret,
+		Symbol: symbol,
+	})
+	if err != nil {
+		return "", err
+	}
+	return resp.Balance, err
 }
 
 // transfer from accounts
 func (p *PayClient) Transfer(ctx context.Context, secret string, toNum string, symbol string, amount string, callbackUrl string) (orderNum string, err error) {
-	return "", err
+	resp, err := p.client.Transfer(ctx, &lib.TransferReq{
+		Secret: secret,
+		ToNum:  toNum,
+		Symbol: symbol,
+		Amount: amount,
+		Url:    callbackUrl,
+	})
+	if err != nil {
+		return "", err
+	}
+	return resp.OrderNum, err
 }
 
 // withdraw to address
 func (p *PayClient) Withdraw(ctx context.Context, secret string, toAddress string, symbol string, amount string, callbackUrl string) (orderNum string, err error) {
-	return "", err
+	resp, err := p.client.Withdraw(ctx, &lib.WithdrawReq{
+		Secret:    secret,
+		ToAddress: toAddress,
+		Symbol:    symbol,
+		Amount:    amount,
+		Url:       callbackUrl,
+	})
+	if err != nil {
+		return "", err
+	}
+	return resp.OrderNum, err
 }
 
 // get bind address for account
 func (p *PayClient) GetAddr(ctx context.Context, secret string, symbol string) (address string, err error) {
-	return "", err
+	resp, err := p.client.GetAddr(ctx, &lib.GetAddrReq{
+		Secret:  secret,
+		Address: address,
+	})
+	if err != nil {
+		return "", err
+	}
+	return resp.Address, err
 }
 
 // do contract operations that were supported by payment backend
 func (p *PayClient) ContractDo(ctx context.Context, secret string, contractAddress string, params []byte, remark string, callbackUrl string) (orderNum string, err error) {
-	return "", err
+	resp, err := p.client.ContractDo(ctx, &lib.ContractDoReq{
+		Secret:          secret,
+		ContractAddress: contractAddress,
+		Params:          params,
+		Remark:          remark,
+		Url:             callbackUrl,
+	})
+	if err != nil {
+		return "", err
+	}
+	return resp.OrderNum, err
 }
 
 // seek infos of an returned order
 func (p *PayClient) GetOrder(ctx context.Context, secret string, orderNum string) (o Order, err error) {
-	return Order{}, err
+	resp, err := p.client.GetOrder(ctx, &lib.GetOrderReq{
+		Secret:   secret,
+		OrderNum: orderNum,
+	})
+	if err != nil {
+		return Order{}, err
+	}
+	return Order{
+		OrderNum:   resp.OrderNum,
+		OrderTyp:   resp.OrderTyp,
+		State:      resp.State,
+		From:       resp.From,
+		To:         resp.To,
+		CreateTime: resp.CreateTime,
+	}, err
 }

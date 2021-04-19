@@ -54,13 +54,12 @@ message WithdrawResp {
 }
 
 message GetAddrReq {
-  string Address = 1;
+  string secret = 1;
+  string Address = 2;
 }
 
 message GetAddrResp {
-  string OrderNum = 1;
-  string OrderTyp = 2;
-  bytes OrderInfo = 3;
+  string address = 1;
 }
 
 message ContractDoReq {

@@ -5,10 +5,12 @@ type Account struct {
 }
 
 type Order struct {
-	OrderNum string
-	// a type of TX/CON
-	OrderTyp  string
-	OrderInfo interface{}
+	OrderNum   string
+	OrderTyp   string
+	State      string
+	From       string
+	To         string
+	CreateTime string
 }
 
 // TX type of OrderInfo
