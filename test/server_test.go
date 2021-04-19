@@ -1,8 +1,8 @@
 package main
 
 import (
-	"entysquare/payment-sdk-go"
-	"entysquare/payment-sdk-go/lib"
+	"github.com/entysquare/payment-sdk-go"
+	"github.com/entysquare/payment-sdk-go/lib"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/reflection"

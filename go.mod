@@ -1,4 +1,4 @@
-module entysquare/payment-sdk-go
+module github.com/entysquare/payment-sdk-go
 
 go 1.14
 

@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"entysquare/payment-sdk-go/lib"
 	"fmt"
+	"github.com/entysquare/payment-sdk-go/lib"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"log"
