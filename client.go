@@ -70,13 +70,12 @@ func (p *PayClient) GetBalance(ctx context.Context, secret string, symbol string
 }
 
 // transfer from accounts
-func (p *PayClient) Transfer(ctx context.Context, secret string, toNum string, symbol string, amount string, callbackUrl string) (orderNum string, err error) {
+func (p *PayClient) Transfer(ctx context.Context, secret string, toNum string, symbol string, amount string) (orderNum string, err error) {
 	resp, err := p.client.Transfer(ctx, &lib.TransferReq{
 		Secret: secret,
 		ToNum:  toNum,
 		Symbol: symbol,
 		Amount: amount,
-		Url:    callbackUrl,
 	})
 	if err != nil {
 		return "", err
