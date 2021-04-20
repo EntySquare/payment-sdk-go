@@ -35,7 +35,6 @@ message TransferReq {
   string ToNum = 2;
   string Symbol = 3;
   string Amount = 4;
-  string Url = 5;
 }
 
 message TransferResp {
