@@ -27,6 +27,7 @@ message GetBalanceReq {
 
 message GetBalanceResp {
   string Balance = 1;
+  string All = 2;
 }
 
 message TransferReq {

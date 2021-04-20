@@ -4,6 +4,13 @@ type Account struct {
 	Secret string
 }
 
+type Balance struct {
+	// all balance
+	All string
+	// exclude frozen
+	Balance string
+}
+
 type Order struct {
 	OrderNum   string
 	OrderTyp   string

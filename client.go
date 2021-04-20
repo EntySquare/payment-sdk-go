@@ -55,15 +55,18 @@ func (p *PayClient) Register(ctx context.Context, num string) (account Account, 
 }
 
 // Get balance for secret keeper
-func (p *PayClient) GetBalance(ctx context.Context, secret string, symbol string) (b string, err error) {
+func (p *PayClient) GetBalance(ctx context.Context, secret string, symbol string) (b Balance, err error) {
 	resp, err := p.client.GetBalance(ctx, &lib.GetBalanceReq{
 		Secret: secret,
 		Symbol: symbol,
 	})
 	if err != nil {
-		return "", err
+		return Balance{}, err
 	}
-	return resp.Balance, err
+	return Balance{
+		All:     resp.All,
+		Balance: resp.Balance,
+	}, err
 }
 
 // transfer from accounts
