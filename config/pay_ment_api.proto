@@ -57,6 +57,7 @@ message WithdrawResp {
 message GetAddrReq {
   string secret = 1;
   string Address = 2;
+  string symbol = 3;
 }
 
 message GetAddrResp {
