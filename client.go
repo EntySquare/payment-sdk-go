@@ -101,8 +101,8 @@ func (p *PayClient) Withdraw(ctx context.Context, secret string, toAddress strin
 // get bind address for account
 func (p *PayClient) GetAddr(ctx context.Context, secret string, symbol string) (address string, err error) {
 	resp, err := p.client.GetAddr(ctx, &lib.GetAddrReq{
-		Secret:  secret,
-		Address: address,
+		Secret: secret,
+		Symbol: symbol,
 	})
 	if err != nil {
 		return "", err
