@@ -45,7 +45,7 @@ func (p *PayClient) Shut(ctx context.Context) (err error) {
 func (p *PayClient) Register(ctx context.Context, num string) (account Account, err error) {
 	resp, err := p.client.Register(ctx, &lib.RegisterReq{
 		Num: num,
-	}, nil)
+	})
 	if err != nil {
 		return Account{}, err
 	}
