@@ -20,26 +20,6 @@ func (e *MessageError) SetMsg(msg string) {
 func (e *MessageError) getMsg() string {
 	return e.msg
 }
-
-//func OutputJson(messageError *MessageError) (errJson []byte, err error) {
-//	buf := new(bytes.Buffer)
-//	if err := binary.Write(buf, binary.LittleEndian, messageError); err != nil {
-//		msgError := NewMsgError(3, "wrong error struct")
-//		return nil, msgError
-//	}
-//	errJson = buf.Bytes()
-//	return errJson, err
-//}
-//func OutputString(messageError *MessageError) (errString string, err error) {
-//	buf := new(bytes.Buffer)
-//	if err := binary.Write(buf, binary.LittleEndian, messageError); err != nil {
-//		msgError := NewMsgError(3, "wrong error struct")
-//		return "", msgError
-//	}
-//	errJson := buf.Bytes()
-//	errString = "ERROR MESSAGE: " + string(errJson)
-//	return errString, err
-//}
 func NewMsgError(code int, msg string) *MessageError {
 	err := MessageError{
 		errorCode: code,
@@ -59,6 +39,8 @@ func NewMsgError(code int, msg string) *MessageError {
 	case 5:
 		err.errorType = "server Error"
 	case 9:
+		err.errorType = "other Error"
+	case 99:
 		err.errorType = "unknown Error"
 
 	}

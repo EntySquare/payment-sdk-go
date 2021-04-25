@@ -37,17 +37,17 @@ func CalculateInt64(x int64, y int64, operator string) (i int64) {
 func CalculateString(x string, y string, operator string) (i string, definedErr *MessageError) {
 	switch operator {
 	case "add":
-		a, xerr := strconv.Atoi(x)
-		b, yerr := strconv.Atoi(y)
-		if xerr != nil || yerr != nil {
+		a, xErr := strconv.Atoi(x)
+		b, yErr := strconv.Atoi(y)
+		if xErr != nil || yErr != nil {
 			definedErr = NewMsgError(4, "error in trans string into int")
 		}
 		i := strconv.Itoa(a + b)
 		return i, definedErr
 	case "sub":
-		a, xerr := strconv.Atoi(x)
-		b, yerr := strconv.Atoi(y)
-		if xerr != nil || yerr != nil {
+		a, xErr := strconv.Atoi(x)
+		b, yErr := strconv.Atoi(y)
+		if xErr != nil || yErr != nil {
 			definedErr = NewMsgError(4, "error in trans string into int")
 		}
 		if a < b {
@@ -56,17 +56,17 @@ func CalculateString(x string, y string, operator string) (i string, definedErr 
 		i := strconv.Itoa(a - b)
 		return i, definedErr
 	case "mul":
-		a, xerr := strconv.Atoi(x)
-		b, yerr := strconv.Atoi(y)
-		if xerr != nil || yerr != nil {
+		a, xErr := strconv.Atoi(x)
+		b, yErr := strconv.Atoi(y)
+		if xErr != nil || yErr != nil {
 			definedErr = NewMsgError(4, "error in trans string into int")
 		}
 		i := strconv.Itoa(a * b)
 		return i, definedErr
 	case "div":
-		a, xerr := strconv.Atoi(x)
-		b, yerr := strconv.Atoi(y)
-		if xerr != nil || yerr != nil {
+		a, xErr := strconv.Atoi(x)
+		b, yErr := strconv.Atoi(y)
+		if xErr != nil || yErr != nil {
 			definedErr = NewMsgError(4, "error in trans string into int")
 		}
 		if b == 0 {
@@ -75,9 +75,9 @@ func CalculateString(x string, y string, operator string) (i string, definedErr 
 		i := strconv.Itoa(a / b)
 		return i, definedErr
 	case "cmp":
-		a, xerr := strconv.Atoi(x)
-		b, yerr := strconv.Atoi(y)
-		if xerr != nil || yerr != nil {
+		a, xErr := strconv.Atoi(x)
+		b, yErr := strconv.Atoi(y)
+		if xErr != nil || yErr != nil {
 			definedErr = NewMsgError(4, "error in trans string into int")
 		}
 		if a > b {
