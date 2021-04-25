@@ -1,6 +1,6 @@
 package util
 
-import "encoding/json"
+import "strconv"
 
 type MessageError struct {
 	errorCode int
@@ -9,7 +9,10 @@ type MessageError struct {
 }
 
 func (e *MessageError) Error() string {
-	return e.msg
+	errJson := "[ERROR MESSAGE: errorCode: " + strconv.Itoa(e.errorCode) +
+		", errorType: " + e.errorType + ", message: " + e.msg + "]"
+	errString := string(errJson)
+	return errString
 }
 func (e *MessageError) SetMsg(msg string) {
 	e.msg = msg
@@ -17,26 +20,26 @@ func (e *MessageError) SetMsg(msg string) {
 func (e *MessageError) getMsg() string {
 	return e.msg
 }
-func OutputJson(messageError MessageError) (errJson []byte, err error) {
-	errJson, err = json.Marshal(messageError)
-	if err != nil {
-		msgError := NewMsgError(3, "wrong error struct")
-		return nil, msgError
-	}
-	return errJson, err
-}
-func OutputString(messageError MessageError) (errString string, err error) {
-	errJson, err := json.Marshal(messageError)
-	if err != nil {
-		msgError := NewMsgError(3, "wrong error struct")
-		return "", msgError
-	}
-	errString = "ERROR MESSAGE: "
-	for i := 0; i < len(errJson); i++ {
-		errString += string(errJson[i])
-	}
-	return errString, err
-}
+
+//func OutputJson(messageError *MessageError) (errJson []byte, err error) {
+//	buf := new(bytes.Buffer)
+//	if err := binary.Write(buf, binary.LittleEndian, messageError); err != nil {
+//		msgError := NewMsgError(3, "wrong error struct")
+//		return nil, msgError
+//	}
+//	errJson = buf.Bytes()
+//	return errJson, err
+//}
+//func OutputString(messageError *MessageError) (errString string, err error) {
+//	buf := new(bytes.Buffer)
+//	if err := binary.Write(buf, binary.LittleEndian, messageError); err != nil {
+//		msgError := NewMsgError(3, "wrong error struct")
+//		return "", msgError
+//	}
+//	errJson := buf.Bytes()
+//	errString = "ERROR MESSAGE: " + string(errJson)
+//	return errString, err
+//}
 func NewMsgError(code int, msg string) *MessageError {
 	err := MessageError{
 		errorCode: code,

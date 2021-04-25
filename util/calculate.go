@@ -34,42 +34,52 @@ func CalculateInt64(x int64, y int64, operator string) (i int64) {
 	}
 	return i
 }
-func CalculateString(x string, y string, operator string) (i string, err error) {
+func CalculateString(x string, y string, operator string) (i string, definedErr *MessageError) {
 	switch operator {
 	case "add":
-		var a, b int
-		a, err = strconv.Atoi(x)
-		b, err = strconv.Atoi(y)
+		a, xerr := strconv.Atoi(x)
+		b, yerr := strconv.Atoi(y)
+		if xerr != nil || yerr != nil {
+			definedErr = NewMsgError(4, "error in trans string into int")
+		}
 		i := strconv.Itoa(a + b)
-		return i, err
+		return i, definedErr
 	case "sub":
-		var a, b int
-		a, err = strconv.Atoi(x)
-		b, err = strconv.Atoi(y)
+		a, xerr := strconv.Atoi(x)
+		b, yerr := strconv.Atoi(y)
+		if xerr != nil || yerr != nil {
+			definedErr = NewMsgError(4, "error in trans string into int")
+		}
 		if a < b {
 			return "", NewMsgError(0, "wrong order")
 		}
 		i := strconv.Itoa(a - b)
-		return i, err
+		return i, definedErr
 	case "mul":
-		var a, b int
-		a, err = strconv.Atoi(x)
-		b, err = strconv.Atoi(y)
+		a, xerr := strconv.Atoi(x)
+		b, yerr := strconv.Atoi(y)
+		if xerr != nil || yerr != nil {
+			definedErr = NewMsgError(4, "error in trans string into int")
+		}
 		i := strconv.Itoa(a * b)
-		return i, err
+		return i, definedErr
 	case "div":
-		var a, b int
-		a, err = strconv.Atoi(x)
-		b, err = strconv.Atoi(y)
+		a, xerr := strconv.Atoi(x)
+		b, yerr := strconv.Atoi(y)
+		if xerr != nil || yerr != nil {
+			definedErr = NewMsgError(4, "error in trans string into int")
+		}
 		if b == 0 {
 			return "", NewMsgError(0, "the denominator is zero")
 		}
 		i := strconv.Itoa(a / b)
-		return i, err
+		return i, definedErr
 	case "cmp":
-		var a, b int
-		a, err = strconv.Atoi(x)
-		b, err = strconv.Atoi(y)
+		a, xerr := strconv.Atoi(x)
+		b, yerr := strconv.Atoi(y)
+		if xerr != nil || yerr != nil {
+			definedErr = NewMsgError(4, "error in trans string into int")
+		}
 		if a > b {
 			i = "1"
 		} else if a < b {
@@ -77,58 +87,128 @@ func CalculateString(x string, y string, operator string) (i string, err error) 
 		} else {
 			i = "0"
 		}
-		return i, err
-	case "addBig":
-		a := new(big.Int)
-		b := new(big.Int)
-		xbi, xok := a.SetString(x, 10)
+		return i, definedErr
+	case "addBigFU":
+		a := new(big.Float)
+		b := new(big.Float)
+		xbf, xok := a.SetString(x)
 		if !xok {
-			definedErr := NewMsgError(4, "error in trans string into bigint")
+			definedErr := NewMsgError(4, "error in trans string into big float")
 			return "", definedErr
 		}
-		ybi, yok := b.SetString(y, 10)
+		ybf, yok := b.SetString(y)
 		if !yok {
-			definedErr := NewMsgError(4, "error in trans string into bigint")
+			definedErr := NewMsgError(4, "error in trans string into big float")
 			return "", definedErr
 		}
-		ibi := xbi.Add(xbi, ybi)
-		i = ibi.String()
-		return i, err
-	case "cmpBig":
-		a := new(big.Int)
-		b := new(big.Int)
-		xbi, xok := a.SetString(x, 10)
+		ibf := xbf.Add(xbf, ybf)
+		i = ibf.Text('f', 18)
+		return i, definedErr
+	case "subBigFU":
+		a := new(big.Float)
+		b := new(big.Float)
+		xbf, xok := a.SetString(x)
 		if !xok {
-			definedErr := NewMsgError(4, "error in trans string into bigint")
+			definedErr := NewMsgError(4, "error in trans string into big float")
 			return "", definedErr
 		}
-		ybi, yok := b.SetString(y, 10)
+		ybf, yok := b.SetString(y)
 		if !yok {
-			definedErr := NewMsgError(4, "error in trans string into bigint")
+			definedErr := NewMsgError(4, "error in trans string into big float")
 			return "", definedErr
 		}
-		i = strconv.Itoa(xbi.Cmp(ybi))
-		return i, err
-	case "subBig":
-		a := new(big.Int)
-		b := new(big.Int)
-		xbi, xok := a.SetString(x, 10)
-		if !xok {
-			definedErr := NewMsgError(4, "error in trans string into bigint")
-			return "", definedErr
-		}
-		ybi, yok := b.SetString(y, 10)
-		if !yok {
-			definedErr := NewMsgError(4, "error in trans string into bigint")
-			return "", definedErr
-		}
-		if xbi.Cmp(ybi) < 0 {
+		if xbf.Cmp(ybf) < 0 {
 			definedErr := NewMsgError(0, "wrong order")
 			return "", definedErr
 		}
-		ibi := xbi.Sub(xbi, ybi)
-		i = ibi.String()
-		return i, err
+		ibf := xbf.Sub(xbf, ybf)
+		i = ibf.Text('f', 18)
+		return i, definedErr
+	case "addBigFH":
+		a := new(big.Float)
+		b := new(big.Float)
+		xbf, xok := a.SetString(x)
+		if !xok {
+			definedErr := NewMsgError(4, "error in trans string into big float")
+			return "", definedErr
+		}
+		ybf, yok := b.SetString(y)
+		if !yok {
+			definedErr := NewMsgError(4, "error in trans string into big float")
+			return "", definedErr
+		}
+		ibf := xbf.Add(xbf, ybf)
+		i = ibf.Text('f', 2)
+		return i, definedErr
+	case "cmpBigF":
+		a := new(big.Float)
+		b := new(big.Float)
+		xbf, xok := a.SetString(x)
+		if !xok {
+			definedErr := NewMsgError(4, "error in trans string into big float")
+			return "", definedErr
+		}
+		ybf, yok := b.SetString(y)
+		if !yok {
+			definedErr := NewMsgError(4, "error in trans string into big float")
+			return "", definedErr
+		}
+		i = strconv.Itoa(xbf.Cmp(ybf))
+		return i, definedErr
+	case "subBigFH":
+		a := new(big.Float)
+		b := new(big.Float)
+		xbf, xok := a.SetString(x)
+		if !xok {
+			definedErr := NewMsgError(4, "error in trans string into big float")
+			return "", definedErr
+		}
+		ybf, yok := b.SetString(y)
+		if !yok {
+			definedErr := NewMsgError(4, "error in trans string into big float")
+			return "", definedErr
+		}
+		if xbf.Cmp(ybf) < 0 {
+			definedErr := NewMsgError(0, "wrong order")
+			return "", definedErr
+		}
+		ibf := xbf.Sub(xbf, ybf)
+		i = ibf.Text('f', 2)
+		return i, definedErr
 	}
-	return i, err
+
+	return i, definedErr
+}
+func Digit(x string, operator string) (i string, definedErr *MessageError) {
+	unit := new(big.Float)
+	a := new(big.Float)
+	bf, ok := a.SetString(x)
+	if !ok {
+		definedErr := NewMsgError(4, "error in trans string into bigint")
+		return "", definedErr
+	}
+	switch operator {
+	case "div18":
+		unit.SetString("1000000000000000000")
+		bf.Quo(bf, unit)
+		i = bf.Text('f', 18)
+		return i, definedErr
+	case "div2":
+		unit.SetString("100")
+		bf.Quo(bf, unit)
+		i = bf.Text('f', 2)
+		return i, definedErr
+	case "mul2":
+		unit.SetString("100")
+		bf.Mul(bf, unit)
+		i = bf.Text('f', 0)
+		return i, definedErr
+	case "mul18":
+		unit.SetString("1000000000000000000")
+		bf.Mul(bf, unit)
+		i = bf.Text('f', 0)
+		return i, definedErr
+	}
+
+	return i, definedErr
 }
