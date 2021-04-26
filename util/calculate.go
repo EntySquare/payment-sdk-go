@@ -155,6 +155,22 @@ func CalculateString(x string, y string, operator string) (i string, definedErr 
 		}
 		i = strconv.Itoa(xbf.Cmp(ybf))
 		return i, definedErr
+	case "divBigF":
+		a := new(big.Float)
+		b := new(big.Float)
+		xbf, xok := a.SetString(x)
+		if !xok {
+			definedErr := NewMsgError(4, "error in trans string into big float")
+			return "", definedErr
+		}
+		ybf, yok := b.SetString(y)
+		if !yok {
+			definedErr := NewMsgError(4, "error in trans string into big float")
+			return "", definedErr
+		}
+		ibf := xbf.Quo(xbf, ybf)
+		i = ibf.Text('f', 6) //保留6位小数
+		return i, definedErr
 	case "subBigFH":
 		a := new(big.Float)
 		b := new(big.Float)
