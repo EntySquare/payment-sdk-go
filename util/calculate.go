@@ -35,88 +35,82 @@ func CalculateInt64(x int64, y int64, operator string) (i int64) {
 	return i
 }
 func CalculateString(x string, y string, operator string) (i string, definedErr *MessageError) {
+	if x == "" {
+		x = "0"
+	}
+	if y == "" {
+		y = "0"
+	}
+	a := new(big.Float)
+	b := new(big.Float)
+	xbf, xok := a.SetString(x)
+	if !xok {
+		definedErr := NewMsgError(4, "error in trans string into big float")
+		return "", definedErr
+	}
+	ybf, yok := b.SetString(y)
+	if !yok {
+		definedErr := NewMsgError(4, "error in trans string into big float")
+		return "", definedErr
+	}
 	switch operator {
 	case "add":
-		a, xErr := strconv.Atoi(x)
-		b, yErr := strconv.Atoi(y)
+		ai, xErr := strconv.Atoi(x)
+		bi, yErr := strconv.Atoi(y)
 		if xErr != nil || yErr != nil {
 			definedErr = NewMsgError(4, "error in trans string into int")
 		}
-		i := strconv.Itoa(a + b)
+		i := strconv.Itoa(ai + bi)
 		return i, definedErr
 	case "sub":
-		a, xErr := strconv.Atoi(x)
-		b, yErr := strconv.Atoi(y)
+		ai, xErr := strconv.Atoi(x)
+		bi, yErr := strconv.Atoi(y)
 		if xErr != nil || yErr != nil {
 			definedErr = NewMsgError(4, "error in trans string into int")
 		}
-		if a < b {
+		if ai < bi {
 			return "", NewMsgError(0, "wrong order")
 		}
-		i := strconv.Itoa(a - b)
+		i := strconv.Itoa(ai - bi)
 		return i, definedErr
 	case "mul":
-		a, xErr := strconv.Atoi(x)
-		b, yErr := strconv.Atoi(y)
+		ai, xErr := strconv.Atoi(x)
+		bi, yErr := strconv.Atoi(y)
 		if xErr != nil || yErr != nil {
 			definedErr = NewMsgError(4, "error in trans string into int")
 		}
-		i := strconv.Itoa(a * b)
+		i := strconv.Itoa(ai * bi)
 		return i, definedErr
 	case "div":
-		a, xErr := strconv.Atoi(x)
-		b, yErr := strconv.Atoi(y)
+		ai, xErr := strconv.Atoi(x)
+		bi, yErr := strconv.Atoi(y)
 		if xErr != nil || yErr != nil {
 			definedErr = NewMsgError(4, "error in trans string into int")
 		}
-		if b == 0 {
+		if bi == 0 {
 			return "", NewMsgError(0, "the denominator is zero")
 		}
-		i := strconv.Itoa(a / b)
+		i := strconv.Itoa(ai / bi)
 		return i, definedErr
 	case "cmp":
-		a, xErr := strconv.Atoi(x)
-		b, yErr := strconv.Atoi(y)
+		ai, xErr := strconv.Atoi(x)
+		bi, yErr := strconv.Atoi(y)
 		if xErr != nil || yErr != nil {
 			definedErr = NewMsgError(4, "error in trans string into int")
 		}
-		if a > b {
+		if ai > bi {
 			i = "1"
-		} else if a < b {
+		} else if ai < bi {
 			i = "-1"
 		} else {
 			i = "0"
 		}
 		return i, definedErr
 	case "addBigFU":
-		a := new(big.Float)
-		b := new(big.Float)
-		xbf, xok := a.SetString(x)
-		if !xok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
-		ybf, yok := b.SetString(y)
-		if !yok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
 		ibf := xbf.Add(xbf, ybf)
 		i = ibf.Text('f', 18)
 		return i, definedErr
 	case "subBigFU":
-		a := new(big.Float)
-		b := new(big.Float)
-		xbf, xok := a.SetString(x)
-		if !xok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
-		ybf, yok := b.SetString(y)
-		if !yok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
 		if xbf.Cmp(ybf) < 0 {
 			definedErr := NewMsgError(0, "wrong order")
 			return "", definedErr
@@ -125,65 +119,21 @@ func CalculateString(x string, y string, operator string) (i string, definedErr 
 		i = ibf.Text('f', 18)
 		return i, definedErr
 	case "addBigFH":
-		a := new(big.Float)
-		b := new(big.Float)
-		xbf, xok := a.SetString(x)
-		if !xok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
-		ybf, yok := b.SetString(y)
-		if !yok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
 		ibf := xbf.Add(xbf, ybf)
 		i = ibf.Text('f', 2)
 		return i, definedErr
 	case "cmpBigF":
-		a := new(big.Float)
-		b := new(big.Float)
-		xbf, xok := a.SetString(x)
-		if !xok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
-		ybf, yok := b.SetString(y)
-		if !yok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
 		i = strconv.Itoa(xbf.Cmp(ybf))
 		return i, definedErr
 	case "divBigF":
-		a := new(big.Float)
-		b := new(big.Float)
-		xbf, xok := a.SetString(x)
-		if !xok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
-		ybf, yok := b.SetString(y)
-		if !yok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
 		ibf := xbf.Quo(xbf, ybf)
-		i = ibf.Text('f', 6) //保留6位小数
+		i = ibf.Text('f', 18) //保留6位小数
+		return i, definedErr
+	case "mulBigF":
+		ibf := xbf.Mul(xbf, ybf)
+		i = ibf.Text('f', 18) //保留6位小数
 		return i, definedErr
 	case "subBigFH":
-		a := new(big.Float)
-		b := new(big.Float)
-		xbf, xok := a.SetString(x)
-		if !xok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
-		ybf, yok := b.SetString(y)
-		if !yok {
-			definedErr := NewMsgError(4, "error in trans string into big float")
-			return "", definedErr
-		}
 		if xbf.Cmp(ybf) < 0 {
 			definedErr := NewMsgError(0, "wrong order")
 			return "", definedErr
